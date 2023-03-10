@@ -18,7 +18,17 @@ namespace ValheimPlus.GameClasses
         {
             if (Configuration.Current.Items.IsEnabled && Configuration.Current.Items.noTeleportPrevention)
             {
-                __instance.m_itemData.m_shared.m_teleportable = true;
+                if(Configuration.Current.Items.noTeleportPreventionOnlyAllowsIngots)
+                {
+                    if (TeleportableItemDefinitions.IngotNames.Contains(__instance.m_itemData.m_shared.m_name))
+                    {
+                        __instance.m_itemData.m_shared.m_teleportable = true;
+                    }
+                }
+                else
+                {
+                    __instance.m_itemData.m_shared.m_teleportable = true;
+                }
             }
 
             if (Configuration.Current.Items.IsEnabled)

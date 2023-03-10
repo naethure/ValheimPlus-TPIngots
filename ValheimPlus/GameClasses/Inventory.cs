@@ -13,13 +13,33 @@ namespace ValheimPlus.GameClasses
     [HarmonyPatch(typeof(Inventory), "IsTeleportable")]
     public static class noItemTeleportPrevention
     {
-        private static void Postfix(ref bool __result)
+        private static bool Prefix(ref Inventory __instance, ref bool __result)
         {
-            if (Configuration.Current.Items.IsEnabled)
+            if (!Configuration.Current.Items.IsEnabled) return true;
+
+            if (!Configuration.Current.Items.noTeleportPrevention) return true;
+
+            if (!Configuration.Current.Items.noTeleportPreventionOnlyAllowsIngots)
             {
-                if (Configuration.Current.Items.noTeleportPrevention)
-                    __result = true;
+                __result = true;
+                return false;
             }
+
+            foreach(var item in __instance.m_inventory)
+            {
+                if (TeleportableItemDefinitions.IngotNames.Contains(item.m_shared.m_name))
+                {
+                    continue;
+                }
+                if (!item.m_shared.m_teleportable)
+                {
+                    __result = false;
+                    return false;
+                }
+            }
+            
+            __result = true;
+            return false;
         }
     }
 
@@ -108,6 +128,17 @@ namespace ValheimPlus.GameClasses
         }
     }
 
-
+    public static class TeleportableItemDefinitions {
+        public static readonly List<string> IngotNames = new List<string>
+        {
+            "Tin",
+            "Copper",
+            "Bronze",
+            "Iron",
+            "Silver",
+            "BlackMetal",
+            "Flametal"
+        };
+    }
 
 }
