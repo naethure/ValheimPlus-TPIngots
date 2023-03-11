@@ -14,7 +14,7 @@ namespace ValheimPlus.GameClasses
     [HarmonyPatch(typeof(ItemDrop), nameof(ItemDrop.Awake))]
     public static class ItemDrop_Awake_Patch
     {
-        private static void Prefix(ref ItemDrop __instance)
+        public static void Prefix(ref ItemDrop __instance)
         {
             if (Configuration.Current.Items.IsEnabled && Configuration.Current.Items.noTeleportPrevention)
             {

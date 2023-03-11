@@ -13,7 +13,7 @@ namespace ValheimPlus.GameClasses
     [HarmonyPatch(typeof(Inventory), "IsTeleportable")]
     public static class noItemTeleportPrevention
     {
-        private static bool Prefix(ref Inventory __instance, ref bool __result)
+        public static bool Prefix(ref Inventory __instance, ref bool __result)
         {
             if (!Configuration.Current.Items.IsEnabled) return true;
 
@@ -131,13 +131,13 @@ namespace ValheimPlus.GameClasses
     public static class TeleportableItemDefinitions {
         public static readonly List<string> IngotNames = new List<string>
         {
-            "Tin",
-            "Copper",
-            "Bronze",
-            "Iron",
-            "Silver",
-            "BlackMetal",
-            "Flametal"
+            "$item_tin",
+            "$item_copper",
+            "$item_bronze",
+            "$item_iron",
+            "$item_silver",
+            "$item_blackmetal",
+            "$item_flametal"
         };
     }
 

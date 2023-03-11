@@ -41,7 +41,7 @@ namespace ValheimPlus.GameClasses
                     "[",portalName,"]"
                     }));
 
-                MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, __result, 0, null);
+                MessageHud.instance.ShowMessage((MessageHud.MessageType)8, __result, 0, null);
                 return;
             }
             return;

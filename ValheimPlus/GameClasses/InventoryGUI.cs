@@ -259,25 +259,25 @@ namespace ValheimPlus.GameClasses
             return instructions;
         }
 
-        private static ItemDrop.ItemData GetFirstRequiredItemFromInventoryOrChest(Player player, Recipe recipe, int quality, out int quantity)
+        private static ItemDrop.ItemData GetFirstRequiredItemFromInventoryOrChest(Player player, Recipe recipe, int quality, out int quantity, out int extraAmount)
         {
-            ItemDrop.ItemData found = player.GetFirstRequiredItem(player.GetInventory(), recipe, quality, out quantity);
-            if (found != null) return found;
+             ItemDrop.ItemData found = player.GetFirstRequiredItem(player.GetInventory(), recipe, quality, out quantity, out extraAmount);
+             if (found != null) return found;
 
-            GameObject pos = player.GetCurrentCraftingStation()?.gameObject;
-            if (!pos || !Configuration.Current.CraftFromChest.checkFromWorkbench) pos = player.gameObject;
+             GameObject pos = player.GetCurrentCraftingStation()?.gameObject;
+             if (!pos || !Configuration.Current.CraftFromChest.checkFromWorkbench) pos = player.gameObject;
 
-            List<Container> nearbyChests = InventoryAssistant.GetNearbyChests(pos, Helper.Clamp(Configuration.Current.CraftFromChest.range, 1, 50), !Configuration.Current.CraftFromChest.ignorePrivateAreaCheck);
+             List<Container> nearbyChests = InventoryAssistant.GetNearbyChests(pos, Helper.Clamp(Configuration.Current.CraftFromChest.range, 1, 50), !Configuration.Current.CraftFromChest.ignorePrivateAreaCheck);
 
-            foreach (Container chest in nearbyChests)
-            {
-                found = player.GetFirstRequiredItem(chest.GetInventory(), recipe, quality, out quantity);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-
+             foreach (Container chest in nearbyChests)
+             {
+                 found = player.GetFirstRequiredItem(chest.GetInventory(), recipe, quality, out quantity, out extraAmount);
+                 if (found != null)
+                 {
+                     return found;
+                 }
+             }
+            
             return null;
         }
 
